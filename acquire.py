@@ -8,16 +8,13 @@ def get_zillow_data(use_cache=True):
         return pd.read_csv(filename)
     else:
         df = pd.read_sql('''
-        SELECT
-        bathroomcnt, 
-        bedroomcnt, 
-        calculatedfinishedsquarefeet, 
-        yearbuilt,
-        taxamount,
-        taxvaluedollarcnt,
-        fips
-        FROM properties_2017
-        JOIN propertylandusetype USING(propertylandusetypeid)
-        Where propertylandusetypeid = 261;''' , get_db_url('zillow'))
+        SELECT bathroomcnt, bedroomcnt, taxvaluedollarcnt, taxamount,
+        calculatedfinishedsquarefeet, yearbuilt, fips
+        FROM properties_2017 
+        LEFT JOIN predictions_2017 USING (parcelid) 
+        LEFT JOIN propertylandusetype USING (propertylandusetypeid)
+        WHERE propertylandusedesc IN ('Single Family Residential',
+        'Inferred Single Family Residential') 
+        AND YEAR(transactiondate) = 2017;''', get_db_url('zillow'))
         df.to_csv(filename, index=False)
         return df

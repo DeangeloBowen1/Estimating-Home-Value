@@ -234,6 +234,11 @@ def split_zillow_data(zillow):
                                            random_state=123)
     train,validate = train_test_split(train_validate, test_size=.3,
                                      random_state=123)
+
+    train = train.drop(columns=['tax_amount'])
+    validate = validate.drop(columns=['tax_amount'])
+    test = test.drop(columns=['tax_amount'])
+    
     return train, validate, test
 
 
@@ -243,13 +248,16 @@ def prep_zillow(zillow):
     zillow = zillow.rename(columns = {'bedroomcnt': 'bedrooms', 'bathroomcnt':'bathrooms', 
                           'calculatedfinishedsquarefeet':'sqft', 'yearbuilt':'year_built', 
                           'taxamount':'tax_amount', 'taxvaluedollarcnt':'tax_value'})
-    
-    column_list = zillow.columns[0:-1]
-    zillow = wr.omit_outliers(zillow, 1.5, column_list)
+
+    columns = ['bedrooms','bathrooms','sqft','year_built','tax_amount','tax_value']
+    zillow = wr.omit_outliers(zillow, 1.5, columns)
+
     
     zillow.fips = zillow.fips.map({6037.0: 'Los Angeles', 6059.0:'Orange County', 6111.0:'Ventura County'})
 
     train, validate, test = split_zillow_data(zillow)
+
+    
 
     return train, validate, test
 
@@ -258,9 +266,9 @@ def prep_zillow_initial(zillow):
     zillow = zillow.rename(columns = {'bedroomcnt': 'bedrooms', 'bathroomcnt':'bathrooms', 
                           'calculatedfinishedsquarefeet':'sqft', 'yearbuilt':'year_built', 
                           'taxamount':'tax_amount', 'taxvaluedollarcnt':'tax_value'})
-    
-    column_list = zillow.columns[0:-1]
-    zillow = wr.omit_outliers(zillow, 1.5, column_list)
+
+    columns = ['bedrooms','bathrooms','sqft','year_built','tax_amount','tax_value']
+    zillow = wr.omit_outliers(zillow, 1.5, columns)
     
     zillow.fips = zillow.fips.map({6037.0: 'Los Angeles', 6059.0:'Orange County', 6111.0:'Ventura County'})
 
