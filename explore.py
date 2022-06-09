@@ -22,6 +22,10 @@ import prepare as prep
 
 
 def plot_variable_pairs(df):
+
+    """
+    Plots features in pairs for a side-by-side comparison of features in a regression plot (lmplot)
+    """
     
     column = ['bedrooms', 'bathrooms', 'sqft', 
                 'year_built']
@@ -37,6 +41,10 @@ def plot_variable_pairs(df):
 
 
 def plot_categorical_and_continuous_vars_displot(df):
+
+    """
+    Creates a displot of select columns in a dataframe
+    """
     
     columns = ['bedrooms', 'bathrooms', 'sqft',
                 'tax_value']
@@ -51,6 +59,10 @@ def plot_categorical_and_continuous_vars_displot(df):
 
 def plot_categorical_and_continuous_vars_swarmplot(df):
 
+    """
+    Creates a swarmplot of select columns in a dataframe
+    """
+
     columns = ['bedrooms', 'bathrooms', 'sqft',
                 'tax_value']
     
@@ -63,6 +75,10 @@ def plot_categorical_and_continuous_vars_swarmplot(df):
     return
 
 def plot_categorical_and_continuous_vars_violinplot(df):
+
+    """
+    Creates a violinplot of select columns in a dataframe
+    """
 
     columns = ['bedrooms', 'bathrooms', 'sqft',
                 'tax_value']
@@ -126,11 +142,23 @@ def bathroom_ttest(df):
         print('I reject the null hypothesis that there is no linear correlation between square feet and number of bedrooms. ')
 
 
+
 def year_and_value(df):
+    """
+    Creates a lmplot of years built and total tax value columns in the zillow dataframe
+    """
     sns.lmplot(x='year_built', y='tax_value', data=df.sample(10_000), size = 12, 
            line_kws={'color':'red'})
 
+
+
+
+
 def year_ttest(df):
+
+    """
+    A statistical T-Test for a linear correlation between total home value and the year the home was built
+    """
     # set the alpha
     alpha = 0.05
 
@@ -147,6 +175,9 @@ def year_ttest(df):
 
     
 def visualize_scaler(scaler, df, target):
+    """
+    Visualizes before and after scaling for features in a dataframe. 
+    """
     fig, axs = plt.subplots(len(target), 2, figsize=(16,12))
     df_scaled = df.copy()
     df_scaled[target] = scaler.fit_transform(df[target])

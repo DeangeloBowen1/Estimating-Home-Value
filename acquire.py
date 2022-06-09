@@ -3,6 +3,19 @@ import pandas as pd
 import os
 
 def get_zillow_data(use_cache=True):
+    """
+    Pulls data from the mySQL zillow_data dataset. The rows pulled are what have been
+    determined key features that directly impact total house value.
+
+    bathroomcnt : number of bathrooms
+    bedroomcnt :number of bedrooms
+    taxvaluedollarcnt : total property tax value
+    taxamount : amount in general taxes
+    calculatedfinishedsqarefeet : sqare feet of the property
+    yearbuilt : the year the property was built
+    fips : state-county location (numerical)
+
+    """
     filename = 'zillow.csv'
     if os.path.isfile(filename) and use_cache:
         return pd.read_csv(filename)
